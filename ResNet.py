@@ -3,14 +3,6 @@ import chainer.functions as F
 from chainer import initializers
 import chainer.links as L
 
-import numpy as np
-import cv2
-from chainercv.visualizations import vis_image
-from chainercv import utils
-import matplotlib.pyplot as plt
-from imagenet_class_id import CLASS_ID
-
-
 class BottleNeckA(chainer.Chain):
 
 	def __init__(self, in_size, ch, out_size, stride=2):

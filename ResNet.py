@@ -3,6 +3,13 @@ import chainer.functions as F
 from chainer import initializers
 import chainer.links as L
 
+import numpy as np
+import cv2
+from chainercv.visualizations import vis_image
+from chainercv import utils
+import matplotlib.pyplot as plt
+from imagenet_class_id import CLASS_ID
+
 
 class BottleNeckA(chainer.Chain):
 
@@ -92,7 +99,7 @@ class ResNetCAM(chainer.Chain):
 			self.res3 = Block(4, 256, 128, 512)
 			self.res4 = Block(6, 512, 256, 1024)
 			self.res5 = Block(3, 1024, 512, 2048)
-			self.fc = L.Linear(2048, 1000)
+			self.fc6 = L.Linear(2048, 1000)
 
 	def __call__(self, x):
 		h = self.bn1(self.conv1(x))
@@ -102,7 +109,6 @@ class ResNetCAM(chainer.Chain):
 		h = self.res4(h)
 		last_conv_output = self.res5(h)
 		h = F.average_pooling_2d(last_conv_output, 7, stride=1)
-		preds = self.fc(h)
+		preds = self.fc6(h)
 
 		return last_conv_output, preds
-
